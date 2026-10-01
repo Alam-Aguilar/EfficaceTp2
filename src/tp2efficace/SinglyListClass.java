@@ -5,13 +5,20 @@ public class SinglyListClass {
 	private Node header;
 	private int size;
 	
-	public SinglyListClass(Node header) {
-		this.header = header;
-//		header = null;
+	public SinglyListClass() {
+		header = null;
 		size = 0;
+	}
+	
+	public SinglyListClass(Integer element) {
+		this.header = new Node(element);
+		this.size = 1;
 	}
 
 	public Integer getHeader( ) {
+		if (header == null) {
+	        return null;
+	    }
 		return header.element;
 	}
 
@@ -22,9 +29,13 @@ public class SinglyListClass {
 	public boolean isEmpty() {
 		int listSize = size();
 		if (listSize == 0 ) {
-			return false;
-		} else return true;
+			return true;
+		} else return false;
 	}
+	
+//	public boolean isEmpty() {
+//	    return size == 0;
+//	}
 
 	public Integer first() {
 		if(header == null) { //header.getElement() == null?
@@ -70,30 +81,62 @@ public class SinglyListClass {
 			size++;
 			return;
 		}
-
-		while (tmpHeader.getNext() != null) { //on s'arrete sur l'avant dernier pas le dernier (null)
-			tmpHeader = tmpHeader.getNext();
+		Node courant = header;
+		
+		while (courant.next != null) {
+			courant = courant.next; 
 		}
-		// on sait que on point vers le dernier de la liste et que le next et null toujours...
-//		if (tmpHeader.getNext() == null ) { // si tmpHeader is null alors on est sur le dernier element...
-//			// on positionne tmpHeader dans le t
-
-		tmpHeader.setNext(newNode);
+		courant.next = newNode;
 		size++;
+		
+//		while (tmpHeader.getNext() != null) { //on s'arrete sur l'avant dernier pas le dernier (null)
+//			tmpHeader = tmpHeader.getNext();
+//		}
+//		// on sait que on point vers le dernier de la liste et que le next et null toujours...
+////		if (tmpHeader.getNext() == null ) { // si tmpHeader is null alors on est sur le dernier element...
+////			// on positionne tmpHeader dans le t
+//
+//		tmpHeader.setNext(newNode);
+//		size++;
 	}
 
 	public void removeFirst() {
-		//TODO
+		if (header == null) {
+	        return;
+	    }
 		header = header.getNext();
 		size--;
 	}
+	
+	public String toString() {
+		if(this.header == null) {
+			return "chaine vide";
+		}
+		StringBuilder sb = new StringBuilder(this.header.toString());
+		Node tmp = this.header.next;
+		while (tmp != null) {
+			sb.append("," + tmp.toString()); // sb.append(",").append(tmp.toString());
+			tmp = tmp.next;
+		}
+		return sb.toString();
+
+	}
 
 
-	private static class Node {
+	private static class Node { //le node is cache...
 
 		private Integer element;
 		private Node next;
 
+		public Node() {
+			next = null;
+		}
+		
+		public void addNext (Integer element) {
+		
+			next = new Node(element);
+		}
+		
 		public Node(Integer element) {
 			this.element = element;
 			next = null; //normalement java le mets automatique a null mais on assure...
@@ -121,14 +164,18 @@ public class SinglyListClass {
 		}
 
 		public String toString() {
-			return element.toString();
+//			return element.toString();
+			return "[element=" + element + "]";
 		}
+
 
 	}
 
-
+	
+//mettre dans une autre class Main...
 	public static void main(String[] args) {
-		SinglyListClass myList = new SinglyListClass(null);
+//		SinglyListClass myList = new SinglyListClass(null);
+		SinglyListClass myList = new SinglyListClass(7);
 		myList.addLast(8);
 		myList.addFirst(6);
 
